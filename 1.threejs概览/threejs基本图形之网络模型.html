@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>threejs基本图形之网络模型</title>
+  <style>
+    html,body{
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+  <script src="../js/three.js"></script>
+</head>
+<body>
+
+  <!--
+    点、线、面
+    首先，所有图形都是由点、线或面构成。
+    Points： 点或者点云，可以用点或点云表示图形
+    Line/LineSegments：直线和虚线，可以用线或线团表示图形
+    Mesh：网络模型，可以用若干三角面表示图形
+  -->
+
+  <canvas id="demo"></canvas>
+
+  <script type="text/javascript">
+
+    // 创建一个场景，它将保存我们所有的元素，例如物体、照相机、灯光。
+    let scene = new THREE.Scene();
+
+    // 创建一个摄像机，它定义了我们所处的位置
+    let camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+    // 创建渲染并设置大小，指定canvas对象
+    let renderer = new THREE.WebGLRenderer({canvas: document.querySelector('#demo')});
+
+    renderer.setClearColor(0xEEEEEE);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    // 创建一个xyz坐标轴，方便理解三维坐标
+    let axes = new THREE.AxisHelper(20);
+    // 坐标轴添加到场景中显示
+    scene.add(axes);
+
+    // 创建一个立方体网络模型
+    let cubeGeometry = new THREE.CubeGeometry(10, 10, 10);
+    let material = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff});
+    let cube = new THREE.Mesh(cubeGeometry, material);
+
+    cube.position.x = -10;
+    cube.position.y = 10;
+    cube.position.z = -10;
+
+    scene.add(cube);
+
+    //设置相机位置
+    camera.position.x = -30;
+    camera.position.y = 40;
+    camera.position.z = 30;
+    camera.lookAt(scene.position);
+
+    const draw = function() {
+      requestAnimationFrame(draw);
+      renderer.render(scene, camera);
+
+      cube.rotation.y += 0.01;
+    }
+
+    draw();
+
+  </script>
+</body>
+</html>
